@@ -9,7 +9,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #ffffff;
     --foreground: #ededed;
   }
 }
@@ -18,7 +18,7 @@ body {
   color: var(--foreground);
   background-color: var(--background);
   font-family: Arial, Helvetica, sans-serif;
-  background-image: url('/hk.png'); /* Add the background image */
+  /* background-image: url('/hk.png'); Add the background image */
   background-size: cover; /* Ensures the image covers the entire background */
   background-repeat: no-repeat; /* Prevents the image from repeating */
   background-position: center; /* Centers the background image */
@@ -27,6 +27,8 @@ body {
 @layer utilities {
   .text-balance {
     text-wrap: balance;
-    
   }
+
 }
+
+

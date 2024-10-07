@@ -1,19 +1,21 @@
 "use client";
 import { useState } from "react";
+import Home from "./Home";
+import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+import Link from "next/link";
+
 
 const UploadForm: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
   const [fileUrl, setFileUrl] = useState<string>("");
-  const [cid, setCid] = useState<string>(""); // State to store the CID
+  const [cid, setCid] = useState<string>("");
 
-  // Handle file input change
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       setFile(e.target.files[0]);
     }
   };
 
-  // Handle form submit for file upload
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!file) return;
@@ -22,7 +24,6 @@ const UploadForm: React.FC = () => {
     formData.append("file", file);
 
     try {
-      // Upload file
       const response = await fetch("/api/upload", {
         method: "POST",
         body: formData,
@@ -30,47 +31,68 @@ const UploadForm: React.FC = () => {
 
       const data = await response.json();
       setFileUrl(data.url || "Error uploading file");
-
-      // After uploading, fetch the CID from the queue
-      const cidResponse = await fetch("/api/queue"); // Fetch CID
+      const cidResponse = await fetch("/api/queue");
       const cidData = await cidResponse.json();
-      console.log(cidData)
-      const hfverify = await fetch("https://hfvalidation-api.vercel.app/check_model?repo_id=DEEPAK70681/sendIntentModelTHEOGv1");
+      console.log(cidData);
+      // const hfverify = await fetch(
+      //   "https://hfvalidation-api.vercel.app/check_model?repo_id=DEEPAK70681/sendIntentModelTHEOGv1"
+      // );
 
-      if (hfverify.ok) {
-        const result = await hfverify.json(); // Parse the response as JSON
-        console.log("Result:", result); // Log the actual data
-      } else {
-        console.error("Failed to fetch:", hfverify.status, hfverify.statusText);
-      }
-      
-      
+      // if (hfverify.ok) {
+      //   const result = await hfverify.json();
+      //   console.log("Result:", result);
+      // } else {
+      //   console.error("Failed to fetch:", hfverify.status, hfverify.statusText);
+      // }
 
       if (cidResponse.ok) {
         setCid(cidData.cid || "No CID found");
       } else {
         setCid("Error fetching CID");
       }
-      
     } catch (error) {
       console.error("Error during file upload or CID fetch", error);
       setFileUrl("Error uploading file");
       setCid("Error fetching CID");
     }
-
   };
 
-
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <input type="file" accept=".py" onChange={handleFileChange} required />
-        <button type="submit">Upload</button>
+    <div className="abolute flex flex-col justify-center items-center h-screen space-y-8">
+      <div className=""> 
+      <Link href="/sign-in">
+      <button className="text-[] absolute top-4 right-96 bg-gradient-to-r from-blue-500 to-teal-400 p-2 border rounded-md pl-6 pr-6">Signin</button>
+      </Link>
+      <Link href="/sign-up">
+      <button className="text-[] absolute top-4 right-60 bg-gradient-to-r from-blue-500 to-teal-400 p-2 border rounded-md pl-6 pr-6">SignUp</button>
+      </Link>
+      </div>
+
+        
+      <h1 className="text-5xl md:text-6xl font-extrabold leading-tighter tracking-tighter text-center">
+        <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400">
+          Upload your Python scripts
+        </span>
+      </h1>
+
+      <form onSubmit={handleSubmit} className="space-y-6 space-x-6 text-center">
+        <input
+          className="border border-gray-300 p-3 rounded-md"
+          type="file"
+          accept=".py"
+          onChange={handleFileChange}
+          required
+        />
+        <button
+          type="submit"
+          className="bg-[#4FD1c5] text-white p-3 rounded-md hover:bg-blue-500"
+        >
+          Upload
+        </button>
       </form>
 
-      {/* Display the uploaded file URL */}
       {fileUrl && (
-        <p>
+        <p className="text-2xl bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400 mt-3">
           Uploaded File URL:{" "}
           <a href={fileUrl} target="_blank" rel="noopener noreferrer">
             {fileUrl}
@@ -78,8 +100,11 @@ const UploadForm: React.FC = () => {
         </p>
       )}
 
-      {/* Display the CID fetched from the queue */}
-      {cid && <p>First CID in the queue: {cid}</p>}
+      {cid && (
+        <p className="text-2xl bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400 mt-3">
+          CID : {cid}
+        </p>
+      )}
     </div>
   );
 };

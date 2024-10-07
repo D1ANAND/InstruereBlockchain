@@ -45,7 +45,7 @@ model, tokenizer = FastLanguageModel.from_pretrained(
 # Importing the Supervised Fintuning Trainer
 from trl import SFTTrainer
 from transformers import TrainingArguments
-from datasets import load_dataset
+from datasets import load_dataset 
 max_seq_length = 2048
 
 # url = "https://huggingface.co/datasets/laion/OIG/resolve/main/unified_chip2.jsonl"
