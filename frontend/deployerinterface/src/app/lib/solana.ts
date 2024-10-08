@@ -3,7 +3,7 @@ import { PublicKey, SystemProgram } from "@solana/web3.js";
 import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { Program, Idl, AnchorProvider, setProvider } from "@coral-xyz/anchor";
-import * as bs58 from "bs58";
+
 
 export const SOLANA_CLUSTER_URL = "https://api.devnet.solana.com";
 
