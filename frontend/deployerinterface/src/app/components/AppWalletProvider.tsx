@@ -9,6 +9,8 @@ import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import { WalletModalProvider, WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { clusterApiUrl } from "@solana/web3.js";
 import { ClerkProvider, SignedIn, SignedOut, SignInButton, SignOutButton, SignUpButton, UserButton } from "@clerk/nextjs";
+import PrelineScript from "./PrelineScript";
+import Bubbles from "./Bubble";
 // import { UnsafeBurnerWalletAdapter } from "@solana/wallet-adapter-wallets";
 
 // Default styles that can be overridden by your app
@@ -59,6 +61,7 @@ export default function AppWalletProvider({
         </WalletModalProvider>
       </WalletProvider>
     </ConnectionProvider>
+  
     </ClerkProvider>
   );
 }

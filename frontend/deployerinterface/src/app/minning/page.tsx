@@ -12,7 +12,8 @@ import {
 } from "../lib/solana";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { AnchorProvider } from "@project-serum/anchor";
-import Circle from "../components/Circle";
+import { SignedOut, SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
+import Bubbles from "../components/Bubble";
 
 const MiningButton: React.FC = () => {
   const [status, setStatus] = useState<string>("");
@@ -121,10 +122,28 @@ const MiningButton: React.FC = () => {
   };
 
   return (
-    <div>
-      <Circle />
+    <div className="abolute flex flex-col justify-center items-center h-screen space-y-8">
+<div className="absolute top-4 flex justify-between right-64 space-x-6">
+  <SignedOut>
+    <div className="bg-gradient-to-r from-blue-500 to-teal-400 p-2 border hover:from-blue-700 hover:to-teal-600 duration-500 rounded-md">
+    <SignInButton />
+    </div>
+    <div className="bg-gradient-to-r from-blue-500 to-teal-400 p-2 border rounded-md">
+      <SignUpButton />
+    </div>
+  </SignedOut>
+
+
+  {/* <SignedIn> */}
+    {/* <div className="bg-gradient-to-r from-blue-500 to-teal-400 p-2 border rounded-md"> */}
+    <UserButton />
+    {/* </div> */}
+  {/* </SignedIn> */}
+</div>
+
+      
       <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r">
-        <h1 className="text-4xl font-bold mb-8 text-transparent bg-clip-text bg-gradient-to-r">
+        <h1 className="text-4xl font-bold mb-8 text-transparent text-white bg-clip-text bg-gradient-to-r">
           Mining
         </h1>
         <button
@@ -133,14 +152,14 @@ const MiningButton: React.FC = () => {
         >
           Start Mining
         </button>
-        <p className="mt-4 text-lg text-gray-800">{status}</p>
+        <p className="mt-4 text-lg  text-white">{status}</p>
         {visibleBlocks.length > 0 && (
           <div className="mt-8">
-            <h2 className="text-2xl font-bold mb-4 text-black">Activity</h2>
+            <h2 className="text-2xl font-bold mb-4 text-white">Activity</h2>
             {visibleBlocks.map((block, index) => (
               <div
                 key={index}
-                className="flex justify-between items-center p-4 mb-4  border-gray-300 rounded-md shadow text-black"
+                className="flex justify-between items-center p-4 mb-4  border-gray-300 rounded-md shadow text-white"
               >
                 <div className="flex flex-col space-y-3">
                   <p>

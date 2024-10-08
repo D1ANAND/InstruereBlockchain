@@ -4,7 +4,7 @@ import UploadForm from '../components/UploadForm'
 const Page = () => {
   return (
     <div>
-                  <div
+                  {/* <div
 
                   
                 className="absolute left-1/2 transform -translate-x-1/2 bottom-0 pointer-events-none -z-1"
@@ -35,7 +35,7 @@ const Page = () => {
                         <circle cx="155" cy="443" r="64" />
                     </g>
                 </svg>
-            </div>
+            </div> */}
       <UploadForm />
     </div>
   )

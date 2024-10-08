@@ -3,7 +3,8 @@ import { useState } from "react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import Link from "next/link";
 import { ClerkProvider, SignedIn, SignedOut, SignInButton, SignOutButton, SignUpButton, UserButton } from "@clerk/nextjs";
-import Circle from "./Circle";
+import Bubbles from "./Bubble";
+
 
 
 const UploadForm: React.FC = () => {
@@ -59,9 +60,8 @@ const UploadForm: React.FC = () => {
   };
 
   return (
-    <>
-    {/* <Circle /> */}
     <div className="abolute flex flex-col justify-center items-center h-screen space-y-8">
+      {/* <Bubbles /> */}
 <div className="absolute top-4 flex justify-between right-64 space-x-6">
   <SignedOut>
     <div className="bg-gradient-to-r from-blue-500 to-teal-400 p-2 border hover:from-blue-700 hover:to-teal-600 duration-500 rounded-md">
@@ -73,11 +73,11 @@ const UploadForm: React.FC = () => {
   </SignedOut>
 
 
-  <SignedIn>
-    <div className="bg-gradient-to-r from-blue-500 to-teal-400 p-2 border rounded-md">
+  {/* <SignedIn> */}
+    {/* <div className="bg-gradient-to-r from-blue-500 to-teal-400 p-2 border rounded-md"> */}
     <UserButton />
-    </div>
-  </SignedIn>
+    {/* </div> */}
+  {/* </SignedIn> */}
 </div>
 
 
@@ -121,7 +121,6 @@ const UploadForm: React.FC = () => {
         </p>
       )}
     </div>
-    </>
   );
 };
 
