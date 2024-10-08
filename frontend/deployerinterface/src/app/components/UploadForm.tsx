@@ -1,8 +1,9 @@
 "use client";
 import { useState } from "react";
-import Home from "./Home";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import Link from "next/link";
+import { ClerkProvider, SignedIn, SignedOut, SignInButton, SignOutButton, SignUpButton, UserButton } from "@clerk/nextjs";
+import Circle from "./Circle";
 
 
 const UploadForm: React.FC = () => {
@@ -58,15 +59,27 @@ const UploadForm: React.FC = () => {
   };
 
   return (
+    <>
+    {/* <Circle /> */}
     <div className="abolute flex flex-col justify-center items-center h-screen space-y-8">
-      <div className=""> 
-      <Link href="/sign-in">
-      <button className="text-[] absolute top-4 right-96 bg-gradient-to-r from-blue-500 to-teal-400 p-2 border rounded-md pl-6 pr-6">Signin</button>
-      </Link>
-      <Link href="/sign-up">
-      <button className="text-[] absolute top-4 right-60 bg-gradient-to-r from-blue-500 to-teal-400 p-2 border rounded-md pl-6 pr-6">SignUp</button>
-      </Link>
-      </div>
+<div className="absolute top-4 flex justify-between right-64 space-x-6">
+  <SignedOut>
+    <div className="bg-gradient-to-r from-blue-500 to-teal-400 p-2 border hover:from-blue-700 hover:to-teal-600 duration-500 rounded-md">
+      <SignInButton />
+    </div>
+    <div className="bg-gradient-to-r from-blue-500 to-teal-400 p-2 border rounded-md">
+      <SignUpButton />
+    </div>
+  </SignedOut>
+
+
+  <SignedIn>
+    <div className="bg-gradient-to-r from-blue-500 to-teal-400 p-2 border rounded-md">
+      <UserButton />
+    </div>
+  </SignedIn>
+</div>
+
 
         
       <h1 className="text-5xl md:text-6xl font-extrabold leading-tighter tracking-tighter text-center">
@@ -91,14 +104,16 @@ const UploadForm: React.FC = () => {
         </button>
       </form>
 
-      {fileUrl && (
+
+      {/* {fileUrl && (
         <p className="text-2xl bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400 mt-3">
           Uploaded File URL:{" "}
           <a href={fileUrl} target="_blank" rel="noopener noreferrer">
             {fileUrl}
           </a>
         </p>
-      )}
+      )} */}
+      
 
       {cid && (
         <p className="text-2xl bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400 mt-3">
@@ -106,6 +121,7 @@ const UploadForm: React.FC = () => {
         </p>
       )}
     </div>
+    </>
   );
 };
 

@@ -8,11 +8,11 @@ import * as bs58 from "bs58";
 export const SOLANA_CLUSTER_URL = "https://api.devnet.solana.com";
 
 export async function getIdl(): Promise<any> {
-  const response = await fetch("/my_custom_blockchain.json"); // Path to your IDL file
+  const response = await fetch("/my_custom_blockchain.json"); 
   if (!response.ok) {
     throw new Error(`Failed to fetch IDL: ${response.statusText}`);
   }
-  const idl = await response.json(); // Parse JSON into a JS object
+  const idl = await response.json(); 
   console.log("Fetched IDL:", JSON.stringify(idl as Idl, null, 2));
   console.log(idl.types);
   return idl;

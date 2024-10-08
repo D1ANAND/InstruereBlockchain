@@ -12,12 +12,13 @@ import {
 } from "../lib/solana";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { AnchorProvider } from "@project-serum/anchor";
-
+import Circle from "../components/Circle";
 
 const MiningButton: React.FC = () => {
   const [status, setStatus] = useState<string>("");
   const [blocks, setBlocks] = useState<any[]>([]);
   const [blockchainKey, setBlockchainKey] = useState<string | null>(null);
+  const [visibleBlocks, setVisibleBlocks] = useState<any[]>([]); // New state for showing blocks one by one
   const wallet = useWallet();
   const [mounted, setMounted] = useState(false);
 
@@ -33,7 +34,7 @@ const MiningButton: React.FC = () => {
     if (blockchainKey) {
       const fetchData = async () => {
         try {
-          for (let i = 0; i < 5; i++) {
+          for (let i = 0; i < 3; i++) {
             const data = await fetchBlockchainAccountData(
               provider,
               blockchainKey
@@ -53,6 +54,26 @@ const MiningButton: React.FC = () => {
       fetchData();
     }
   }, [blockchainKey, provider]);
+
+  useEffect(() => {
+    // Show the blocks one by one with 5 seconds delay between each
+    if (blocks.length > 0) {
+      setVisibleBlocks([]); // Reset visible blocks each time new blocks are set
+      let index = 0;
+      const interval = setInterval(() => {
+        if (index < blocks.length) {
+          setVisibleBlocks((prevVisibleBlocks) => [
+            blocks[index], // Prepend the new block
+            ...prevVisibleBlocks, // Keep the previous blocks below the new one
+          ]);
+          index++;
+        } else {
+          clearInterval(interval); // Clear interval when all blocks are displayed
+        }
+      }, 5000); // 5 seconds delay
+    }
+  }, [blocks]); // Re-run when blocks are updated
+  
 
   const startMining = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
@@ -76,30 +97,22 @@ const MiningButton: React.FC = () => {
         return;
       }
 
-      setStatus(`Success! Model uploaded to IPFS: ${ipfsHash}`);
+      // setStatus(`Success! Model uploaded to IPFS: ${ipfsHash}`);
 
       let blockchainKeyToUse = blockchainKey;
       if (!blockchainKey) {
         blockchainKeyToUse = await initializeBlockchain(provider);
-        setBlockchainKey(blockchainKeyToUse);
-        console.log("Blockchain initialized:", blockchainKeyToUse);
-
-        setTimeout(async () => {
-          await addBlock(provider, blockchainKeyToUse!, ipfsHash);
-          setStatus("Block added to blockchain!");
-          console.log("Block added with IPFS Hash:", ipfsHash);
-        }, 10000);
-      } else {
+        blockchainKeyToUse = "Crs3dnYHwq49AtNjefvyT6aYyGSjaYojyAFtSMbY1DnZ";
         await addBlock(provider, blockchainKeyToUse!, ipfsHash);
         setStatus("Block added to blockchain!");
-        console.log("Block added with IPFS Hash:", ipfsHash);
+      } else {
+        await addBlock(provider, blockchainKeyToUse!, ipfsHash);
       }
 
       const blockchainData = await fetchBlockchainAccountData(
         provider,
         blockchainKeyToUse!
       );
-      console.log("Fetched Blockchain Data", blockchainData);
       setBlocks(blockchainData);
     } catch (error) {
       setStatus("Error: Unable to connect to mining server.");
@@ -109,30 +122,31 @@ const MiningButton: React.FC = () => {
 
   return (
     <div>
-        <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r">
-          <h1 className="text-4xl font-bold mb-8 text-transparent bg-clip-text bg-gradient-to-r">
-            Mining Extension
-          </h1>
-          <button
-            onClick={startMining}
-            className="px-6 py-3 bg-cyan-500 hover:bg-cyan-600 text-white font-semibold rounded-md shadow-lg transition duration-300 ease-in-out"
-          >
-            Start Mining
-          </button>
-          <p className="mt-4 text-lg text-gray-800">{status}</p>
-          {blocks.length > 0 && (
-            <div className="mt-8">
-              <h2 className="text-2xl font-bold mb-4">Blockchain Data</h2>
-              {blocks.map((block, index) => (
-                <div
-                  key={index}
-                  className="p-4 mb-4 border border-gray-300 rounded-md shadow"
-                >
+      <Circle />
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r">
+        <h1 className="text-4xl font-bold mb-8 text-transparent bg-clip-text bg-gradient-to-r">
+          Mining
+        </h1>
+        <button
+          onClick={startMining}
+          className="px-6 py-3 bg-cyan-500 hover:bg-cyan-600 text-white font-semibold rounded-md shadow-lg transition duration-300 ease-in-out"
+        >
+          Start Mining
+        </button>
+        <p className="mt-4 text-lg text-gray-800">{status}</p>
+        {visibleBlocks.length > 0 && (
+          <div className="mt-8">
+            <h2 className="text-2xl font-bold mb-4 text-black">Activity</h2>
+            {visibleBlocks.map((block, index) => (
+              <div
+                key={index}
+                className="flex justify-between items-center p-4 mb-4  border-gray-300 rounded-md shadow text-black"
+              >
+                <div className="flex flex-col space-y-3">
                   <p>
                     <strong>Block Number:</strong>{" "}
                     {block?.blockNumber ? block.blockNumber.toString() : "N/A"}
                   </p>
-
                   <p>
                     <strong>Miner:</strong>
                     {block?.miner?.toBase58
@@ -141,11 +155,8 @@ const MiningButton: React.FC = () => {
                       ? JSON.stringify(block.miner)
                       : "N/A"}
                   </p>
-
-                  <p>
-                    <strong>IPFS Hash:</strong> {block?.ipfsHash || "N/A"}
-                  </p>
-
+                </div>
+                <div className="text-right pl-16">
                   <p>
                     <strong>Timestamp:</strong>{" "}
                     {block?.timestamp
@@ -155,10 +166,11 @@ const MiningButton: React.FC = () => {
                       : "N/A"}
                   </p>
                 </div>
-              ))}
-            </div>
-          )}
-        </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

@@ -1,16 +1,12 @@
-import { SignedIn, SignIn } from '@clerk/nextjs';
-import SignInPage from './(auth)/sign-in/page';
-import UploadForm from './components/UploadForm';
-import Link from 'next/link';
-import MainPage from './components/MainPage';
+import React from 'react'
+import UploadForm from '../components/UploadForm'
 
-const Home: React.FC = () => {
-    return (
-        <main>
-          <MainPage />
-            {/* <h1>Upload Python Script to IPFS</h1> */}
-            {/* <UploadForm />             */}
-            <div
+const Page = () => {
+  return (
+    <div>
+                  <div
+
+                  
                 className="absolute left-1/2 transform -translate-x-1/2 bottom-0 pointer-events-none -z-1"
                 aria-hidden="true"
             >
@@ -40,10 +36,9 @@ const Home: React.FC = () => {
                     </g>
                 </svg>
             </div>
+      <UploadForm />
+    </div>
+  )
+}
 
-            
-        </main>
-    );
-};
-
-export default Home;
+export default Page
