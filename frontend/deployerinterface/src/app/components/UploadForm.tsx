@@ -65,7 +65,7 @@ const UploadForm: React.FC = () => {
 <div className="absolute top-4 flex justify-between right-64 space-x-6">
   <SignedOut>
     <div className="bg-gradient-to-r from-blue-500 to-teal-400 p-2 border hover:from-blue-700 hover:to-teal-600 duration-500 rounded-md">
-      <SignInButton />
+    <SignInButton />
     </div>
     <div className="bg-gradient-to-r from-blue-500 to-teal-400 p-2 border rounded-md">
       <SignUpButton />
@@ -75,7 +75,7 @@ const UploadForm: React.FC = () => {
 
   <SignedIn>
     <div className="bg-gradient-to-r from-blue-500 to-teal-400 p-2 border rounded-md">
-      <UserButton />
+    <UserButton />
     </div>
   </SignedIn>
 </div>
